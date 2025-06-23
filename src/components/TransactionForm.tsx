@@ -94,7 +94,7 @@ const TransactionForm = ({ onAddTransaction }: TransactionFormProps) => {
                   id="amount"
                   type="number"
                   step="0.01"
-                  placeholder="1000"
+                  placeholder="$ 0"
                   value={formData.amount}
                   onChange={(e) => updateAmountField(e.target.value)}
                   className={errors.amount ? "border-red-500" : ""}
@@ -103,7 +103,7 @@ const TransactionForm = ({ onAddTransaction }: TransactionFormProps) => {
                   <p className="text-sm text-red-500">{errors.amount}</p>
                 )}
                 <p className="text-xs text-gray-500">
-                  Ejemplo: 50.000 para cincuenta mil pesos.
+                  Ejemplo: 50000 para cincuenta mil pesos.
                 </p>
               </div>
 
