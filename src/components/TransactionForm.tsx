@@ -19,13 +19,14 @@ import { Plus } from "lucide-react";
 import { INCOME_CATEGORIES, EXPENSE_CATEGORIES } from "@/data/categories";
 import Transaction from "@/interface/Transaction";
 import { useTransactionForm } from "@/hooks/useTransactionForm";
+import { NumericFormat } from "react-number-format";
 
 interface TransactionFormProps {
   onAddTransaction: (transaction: Omit<Transaction, "id">) => void;
 }
 
 const TransactionForm = ({ onAddTransaction }: TransactionFormProps) => {
-  const { formData, errors, handleSubmit, updateField, updateAmountField } =
+  const { formData, errors, handleSubmit, updateField, updateAmount } =
     useTransactionForm(onAddTransaction);
 
   return (
@@ -90,13 +91,16 @@ const TransactionForm = ({ onAddTransaction }: TransactionFormProps) => {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="amount">Monto (CLP) *</Label>
-                <Input
+                <NumericFormat
                   id="amount"
-                  type="number"
-                  step="0.01"
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  prefix="$ "
+                  allowNegative={false}
                   placeholder="$ 0"
                   value={formData.amount}
-                  onChange={(e) => updateAmountField(e.target.value)}
+                  onValueChange={(values) => updateAmount(values.floatValue)}
+                  customInput={Input}
                   className={errors.amount ? "border-red-500" : ""}
                 />
                 {errors.amount && (

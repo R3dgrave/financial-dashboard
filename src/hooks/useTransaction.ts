@@ -21,20 +21,6 @@ export function useTransactions() {
     return `${((value / total) * 100).toFixed(1)}%`;
   };
 
-  const formatCurrencyInput = (value: string) => {
-    // Remover todo excepto números
-    const numericValue = value.replace(/[^\d]/g, "");
-    if (!numericValue) return "";
-    // Formatear con separadores de miles
-    return new Intl.NumberFormat("es-CL").format(Number.parseInt(numericValue));
-  };
-
-  const parseCurrencyInput = (value: string): number => {
-    // Remover separadores y convertir a número
-    const numericValue = value.replace(/[^\d]/g, "");
-    return Number.parseInt(numericValue) || 0;
-  };
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("es-ES");
   };
@@ -63,7 +49,5 @@ export function useTransactions() {
     formatCurrency,
     formatDate,
     formatPercent,
-    formatCurrencyInput,
-    parseCurrencyInput,
   };
 }
