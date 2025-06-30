@@ -8,18 +8,12 @@ interface FormData {
   date: string;
   description: string;
 }
-interface FormErrors {
-  type?: string;
-  category?: string;
-  amount?: string;
-  date?: string;
-  description?: string;
-}
+
+type FormErrors = Partial<Record<keyof FormData, string>>;
 
 export function useTransactionForm(
   onSubmit: (transaction: Omit<Transaction, "id">) => void
 ) {
-  //useStates para controlar estados
   const [errors, setErrors] = useState<FormErrors>({});
   const [formData, setFormData] = useState<FormData>({
     type: "",
@@ -29,42 +23,38 @@ export function useTransactionForm(
     description: "",
   });
 
-  //Validar campos del formulario
   const validateForm = (): boolean => {
-    const newErrors: Partial<FormErrors> = {};
+    const { type, category, amount, date } = formData;
+    const newErrors: FormErrors = {};
 
-    if (!formData.type) newErrors.type = "El tipo es obligatorio";
-    if (!formData.category) newErrors.category = "La categoría es obligatoria";
-    if (!formData.amount || formData.amount <= 0)
+    if (!type) newErrors.type = "El tipo es obligatorio";
+    if (!category) newErrors.category = "La categoría es obligatoria";
+    if (!amount || amount <= 0)
       newErrors.amount = "El monto debe ser mayor a $0";
-    if (formData.amount > 999_999_999) {
+    if (amount > 999_999_999)
       newErrors.amount = "El monto no puede exceder $999.999.999";
-    }
-    console.log("Monto ingresado:", formData.amount);
-    if (!formData.date) newErrors.date = "La fecha es obligatoria";
+    if (!date) newErrors.date = "La fecha es obligatoria";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  //enviar formulario
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const transaction: Omit<Transaction, "id"> = {
-      type: formData.type as "income" | "expense",
-      category: formData.category,
-      amount: formData.amount,
-      date: formData.date,
-      description: formData.description || undefined,
-    };
+    const { type, category, amount, date, description } = formData;
+    onSubmit({
+      type: type as "income" | "expense",
+      category,
+      amount,
+      date,
+      description: description || undefined,
+    });
 
-    onSubmit(transaction);
     resetForm();
   };
 
-  //resetear formulario luego del envio
   const resetForm = () => {
     setFormData({
       type: "",
@@ -76,19 +66,10 @@ export function useTransactionForm(
     setErrors({});
   };
 
-  //controlar cambios de estado en los inputs
-  const updateField = (field: keyof FormData, value: string) => {
+  const updateField = (field: keyof FormData, value: string | number) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }));
-  };
-
-  //actualizar el campo monto
-  const updateAmount = (value: number | undefined) => {
-    if (typeof value === "number") {
-      setFormData((prev) => ({ ...prev, amount: value }));
-      if (errors.amount) {
-        setErrors((prev) => ({ ...prev, amount: undefined }));
-      }
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   };
 
@@ -97,7 +78,6 @@ export function useTransactionForm(
     errors,
     handleSubmit,
     updateField,
-    updateAmount,
     resetForm,
   };
 }

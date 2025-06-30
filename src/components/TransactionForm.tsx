@@ -26,7 +26,7 @@ interface TransactionFormProps {
 }
 
 const TransactionForm = ({ onAddTransaction }: TransactionFormProps) => {
-  const { formData, errors, handleSubmit, updateField, updateAmount } =
+  const { formData, errors, handleSubmit, updateField } =
     useTransactionForm(onAddTransaction);
 
   return (
@@ -99,16 +99,15 @@ const TransactionForm = ({ onAddTransaction }: TransactionFormProps) => {
                   allowNegative={false}
                   placeholder="$ 0"
                   value={formData.amount}
-                  onValueChange={(values) => updateAmount(values.floatValue)}
+                  onValueChange={(values) =>
+                    updateField("amount", values.floatValue ?? "")
+                  }
                   customInput={Input}
                   className={errors.amount ? "border-red-500" : ""}
                 />
                 {errors.amount && (
                   <p className="text-sm text-red-500">{errors.amount}</p>
                 )}
-                <p className="text-xs text-gray-500">
-                  Ejemplo: 50000 para cincuenta mil pesos.
-                </p>
               </div>
 
               <div className="space-y-2">

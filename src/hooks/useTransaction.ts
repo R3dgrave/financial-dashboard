@@ -16,11 +16,6 @@ export function useTransactions() {
     }).format(amount);
   };
 
-  const formatPercent = (value: number, total: number) => {
-    if (total === 0) return "0%";
-    return `${((value / total) * 100).toFixed(1)}%`;
-  };
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("es-ES");
   };
@@ -37,17 +32,11 @@ export function useTransactions() {
     setTransactions((prev) => prev.filter((t) => t.id !== id));
   };
 
-  const clearAllTransactions = () => {
-    setTransactions([]);
-  };
-
   return {
     transactions,
     addTransaction,
     deleteTransaction,
-    clearAllTransactions,
     formatCurrency,
     formatDate,
-    formatPercent,
   };
 }
