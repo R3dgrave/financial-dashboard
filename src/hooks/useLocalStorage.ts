@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
+import { LocalStorageAdapter } from "../services/LocalStorageAdapter";
 
 export function useLocalStorage<T>(key: string, initialValue: T) {
   const [storedValue, setStoredValue] = useState<T>(initialValue);
 
-  const getValue = () => {
+  const getValue = (): T => {
     try {
-      if (typeof window !== "undefined") {
-        const item = window.localStorage.getItem(key);
-        return item ? JSON.parse(item) : initialValue;
+      const item = LocalStorageAdapter.getItem(key);
+      if (item) {
+        return JSON.parse(item);
       }
       return initialValue;
     } catch (error) {
@@ -18,15 +19,12 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 
   const setValue = (value: T | ((val: T) => T)) => {
     try {
-      const valueToStore =
-        value instanceof Function ? value(storedValue) : value;
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
-
-      if (typeof window !== "undefined") {
-        window.localStorage.setItem(key, JSON.stringify(valueToStore));
-      }
+      const serializedValue = JSON.stringify(valueToStore);
+      LocalStorageAdapter.setItem(key, serializedValue);
     } catch (error) {
-      console.error(`Error al leer clave localStorage "${key}":`, error);
+      console.error(`Error al guardar clave localStorage "${key}":`, error);
     }
   };
 

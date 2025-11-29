@@ -1,15 +1,7 @@
 import { useState } from "react";
-import Transaction from "@/interface/Transaction";
-
-interface FormData {
-  type: string;
-  category: string;
-  amount: number;
-  date: string;
-  description: string;
-}
-
-type FormErrors = Partial<Record<keyof FormData, string>>;
+import Transaction from "@/types/Transaction";
+import { FormData, FormErrors } from "../types/FormData";
+import { TransactionValidator } from "../services/TransactionValidator";
 
 export function useTransactionForm(
   onSubmit: (transaction: Omit<Transaction, "id">) => void
@@ -24,16 +16,7 @@ export function useTransactionForm(
   });
 
   const validateForm = (): boolean => {
-    const { type, category, amount, date } = formData;
-    const newErrors: FormErrors = {};
-
-    if (!type) newErrors.type = "El tipo es obligatorio";
-    if (!category) newErrors.category = "La categoría es obligatoria";
-    if (!amount || amount <= 0)
-      newErrors.amount = "El monto debe ser mayor a $0";
-    if (amount > 999_999_999)
-      newErrors.amount = "El monto no puede exceder $999.999.999";
-    if (!date) newErrors.date = "La fecha es obligatoria";
+    const newErrors = TransactionValidator.validate(formData);
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;

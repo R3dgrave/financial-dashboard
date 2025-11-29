@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { INCOME_CATEGORIES, EXPENSE_CATEGORIES } from "@/data/categories";
-import Transaction from "@/interface/Transaction";
+import Transaction from "@/types/Transaction";
 import { useTransactionForm } from "@/hooks/useTransactionForm";
 import { NumericFormat } from "react-number-format";
 
