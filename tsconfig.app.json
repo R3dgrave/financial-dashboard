@@ -12,8 +12,7 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": false,
     "moduleDetection": "force",
