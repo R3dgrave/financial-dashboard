@@ -1,24 +1,13 @@
-import Transaction from "@/interface/Transaction";
+// hooks/useTransaction.ts
+import Transaction from "@/types/Transaction";
 import { useLocalStorage } from "./useLocalStorage";
+import { FormatterService } from "../services/FormatterService";
 
 export function useTransactions() {
   const [transactions, setTransactions] = useLocalStorage<Transaction[]>(
     "financial-transactions",
     []
   );
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("es-CL", {
-      style: "currency",
-      currency: "CLP",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("es-ES");
-  };
 
   const addTransaction = (transaction: Omit<Transaction, "id">) => {
     const newTransaction: Transaction = {
@@ -36,7 +25,7 @@ export function useTransactions() {
     transactions,
     addTransaction,
     deleteTransaction,
-    formatCurrency,
-    formatDate,
+    formatCurrency: FormatterService.formatCurrency,
+    formatDate: FormatterService.formatDate,
   };
 }
