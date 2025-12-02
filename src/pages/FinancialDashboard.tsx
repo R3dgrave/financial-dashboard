@@ -1,8 +1,8 @@
 import { ExpenseChart } from "../components/ExpenseChart";
 import Header from "../components/Header";
 import TransactionForm from "../components/TransactionForm";
-import { useTransactions } from "@/hooks/useTransaction";
-import { useFinancialSummary } from "@/hooks/useFinancialSummary";
+import { useTransactions } from "../hooks/useTransaction";
+import { useFinancialSummary } from "../hooks/useFinancialSummary";
 import {
   Card,
   CardContent,
@@ -10,7 +10,7 @@ import {
   CardTitle,
   CardDescription,
 } from "../components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/ui/button";
 import { DollarSign, TrendingDown, TrendingUp, Trash2 } from "lucide-react";
 import {
   Table,
@@ -19,8 +19,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { AmountDisplay } from "@/components/AmountDisplay";
+} from "../components/ui/table";
+import { AmountDisplay } from "../components/AmountDisplay";
 
 const FinancialDashboard = () => {
   const {
@@ -30,6 +30,7 @@ const FinancialDashboard = () => {
     formatCurrency,
     formatDate,
   } = useTransactions();
+  
   const {
     totalIncome,
     totalExpenses,
@@ -45,7 +46,7 @@ const FinancialDashboard = () => {
           <Header />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card>
+            <Card data-testid="summary-card-ingresos-totales">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Ingresos Totales
@@ -62,7 +63,7 @@ const FinancialDashboard = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card data-testid="summary-card-gastos-totales">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Gastos Totales
@@ -79,7 +80,7 @@ const FinancialDashboard = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card data-testid="summary-card-balance">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Balance</CardTitle>
                 <DollarSign
@@ -159,6 +160,7 @@ const FinancialDashboard = () => {
 
                         <TableCell className="text-center">
                           <Button
+                            aria-label="Eliminar transacción"
                             variant="ghost"
                             size="sm"
                             onClick={() => deleteTransaction(transaction.id)}

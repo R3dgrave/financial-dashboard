@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "./ui/card";
 import { ChartContainer } from "@/components/ui/chart";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell } from "recharts";
 import { CHART_COLORS } from "@/data/categories";
 
 interface ExpenseChartProps {
@@ -29,18 +29,18 @@ export const ExpenseChart = ({ expensesByCategory }: ExpenseChartProps) => {
 
   return (
     <>
-      <Card>
+      <Card data-testid="mock-expense-chart">
         <CardHeader>
           <CardTitle>Gastos por Categoría</CardTitle>
           <CardDescription>Distribución de tus gastos</CardDescription>
         </CardHeader>
         <CardContent>
           {chartData.length > 0 ? (
-            <ChartContainer
+            <ChartContainer 
               config={{}}
-              className="w-full h-[300px] overflow-x-auto"
+              className="flex w-full h-[300px] overflow-x-auto"
             >
-              <ResponsiveContainer width="100%" height="100%">
+
                 <PieChart>
                   <Pie
                     data={chartData}
@@ -61,7 +61,6 @@ export const ExpenseChart = ({ expensesByCategory }: ExpenseChartProps) => {
                     ))}
                   </Pie>
                 </PieChart>
-              </ResponsiveContainer>
             </ChartContainer>
           ) : (
             <div className="h-[300px] flex items-center justify-center text-gray-500">
