@@ -1,4 +1,4 @@
-import { FormData, FormErrors } from "@/types/FormData";
+import { FormData, FormErrors } from "../types/FormData";
 
 export class TransactionValidator {
   public static validate(formData: FormData): FormErrors {
